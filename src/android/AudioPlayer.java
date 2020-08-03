@@ -150,7 +150,9 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
             break;
         case NONE:
             this.audioFile = file;
-            this.recorder = new MediaRecorder();this.recorder.setOutputFormat(AudioFormat.ENCODING_PCM_16BIT);
+            this.recorder = new MediaRecorder();
+            this.recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            this.recorder.setOutputFormat(AudioFormat.ENCODING_PCM_16BIT);
             this.recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
             this.recorder.setAudioChannels(1);
             this.recorder.setAudioEncodingBitRate(128000);
