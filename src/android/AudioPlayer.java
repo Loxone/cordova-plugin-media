@@ -18,6 +18,7 @@
 */
 package org.apache.cordova.media;
 
+import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -153,8 +154,11 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
             this.audioFile = file;
             this.recorder = new MediaRecorder();
             this.recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            this.recorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS); // RAW_AMR);
-            this.recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC); //AMR_NB);
+            this.recorder.setOutputFormat(AudioFormat.ENCODING_PCM_16BIT);
+            this.recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+            this.recorder.setAudioChannels(1);
+            this.recorder.setAudioEncodingBitRate(128000);
+            this.recorder.setAudioSamplingRate(48000);
             this.tempFile = generateTempFile();
             this.recorder.setOutputFile(this.tempFile);
             try {
