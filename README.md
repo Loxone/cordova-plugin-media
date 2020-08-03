@@ -539,7 +539,7 @@ function recordAudio() {
 
 ### Android Quirks
 
-- Android devices record audio in AAC ADTS file format. The specified file should end with a _.aac_ extension.
+- Android devices record audio in .wav format.
 - The hardware volume controls are wired up to the media volume while any Media objects are alive. Once the last created Media object has `release()` called on it, the volume controls revert to their default behaviour. The controls are also reset on page navigation, as this releases all Media objects.
 
 ### iOS Quirks
