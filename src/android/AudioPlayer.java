@@ -118,9 +118,16 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
      * @return String
      */
     private String createAudioFilePath(String fileName) {
-        File dir = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
-            ? context.getExternalFilesDir(null)
-            : context.getCacheDir();
+         File dir;
+        // With Android 13 the external storage handling has changed, the permission is no longer granted and one
+        // has to use other means. But since placing the recording into the cache directory, we can skip this here.
+        if(Build.VERSION.SDK_INT >= 32) { // 32 = Android 13
+            dir = context.getCacheDir();
+        } else {
+            dir = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)
+                ? context.getExternalFilesDir(null)
+                : context.getCacheDir();
+        }
 
         fileName = (fileName == null || fileName.isEmpty())
             ? String.format("tmprecording-%d.3gp", System.currentTimeMillis())
