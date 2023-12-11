@@ -550,6 +550,7 @@ function recordAudio() {
 
 ### Android Quirks
 
+- Since Android 13, the write external storage handling has been changed, the permission is no longer granted - to avoid further rewrite, recording goes to the chache directory instead.
 - Android devices record audio in Adaptive Multi-Rate format. The specified file should end with a _.amr_ extension.
 - The hardware volume controls are wired up to the media volume while any Media objects are alive. Once the last created Media object has `release()` called on it, the volume controls revert to their default behaviour. The controls are also reset on page navigation, as this releases all Media objects.
 
