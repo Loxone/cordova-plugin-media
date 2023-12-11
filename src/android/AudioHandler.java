@@ -541,19 +541,24 @@ public class AudioHandler extends CordovaPlugin {
 
     private void promptForRecord()
     {
-        if(PermissionHelper.hasPermission(this, permissions[WRITE_EXTERNAL_STORAGE])  &&
+       // With Android 13 the external storage handling has changed, the permission is no longer granted and one
+        // has to use other means. But since placing the recording into the cache directory, we can skip this here.
+        if(Build.VERSION.SDK_INT >= 32) { // 32 = Android 13
+            if(PermissionHelper.hasPermission(this, permissions[RECORD_AUDIO])) {
+                this.startRecordingAudio(recordId, FileHelper.stripFileProtocol(fileUriStr));
+            } else {
+                getMicPermission(RECORD_AUDIO);
+            }
+        } else {
+            if(PermissionHelper.hasPermission(this, permissions[WRITE_EXTERNAL_STORAGE])  &&
                 PermissionHelper.hasPermission(this, permissions[RECORD_AUDIO])) {
-            this.startRecordingAudio(recordId, FileHelper.stripFileProtocol(fileUriStr));
+                this.startRecordingAudio(recordId, FileHelper.stripFileProtocol(fileUriStr));
+            } else if(PermissionHelper.hasPermission(this, permissions[RECORD_AUDIO])) {
+                getWritePermission(WRITE_EXTERNAL_STORAGE);
+            } else {
+                getMicPermission(RECORD_AUDIO);
+            }
         }
-        else if(PermissionHelper.hasPermission(this, permissions[RECORD_AUDIO]))
-        {
-            getWritePermission(WRITE_EXTERNAL_STORAGE);
-        }
-        else
-        {
-            getMicPermission(RECORD_AUDIO);
-        }
-
     }
 
     /**
